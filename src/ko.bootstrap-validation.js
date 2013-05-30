@@ -42,9 +42,6 @@ ko.extenders.boostrapValidation = function(target, options) {
 	// the hasError sub-observable is initally set to the required option because if it's
 	// required we want an error off the bat, if not we don't want to count it as an error
 	target.hasError = ko.observable(settings.required);
-	// the required property is used to check whether the target observable needs to be 
-	// validated against the isValid check on the boostrapValidatedViewModel
-	target.required = settings.required;
 
 	// create a subscription on the observable to evaluate the value of the observable
 	target.subscribe(function() {
@@ -101,7 +98,7 @@ ko.bootstrapValidatedViewModel = function(viewModel) {
 		   		errorCount = viewModel[key].hasError() ? errorCount +=1 : errorCount;
 		   };
 		}
-		
+
 		// if the errorCount is zero then the view model is valid
 		return errorCount === 0;
 	}, viewModel);
