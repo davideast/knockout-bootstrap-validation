@@ -1,0 +1,99 @@
+<html>
+<head>
+	<title>Knockout Bootstrap Validation</title>
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="container">
+
+		<div class="jumbotron">
+			<h2>Contact Us!</h2>
+
+			<form class="col-md-12">
+
+				<div class="row">
+					<div class="form-group" data-bind="css: name.validationClass">
+					  <label class="control-label">Name (required)</label>
+					  <input type="text" class="form-control" data-bind="value: name, valueUpdate: 'afterkeyup'" />
+					  <span class="control-label" data-bind="text: name.validationMessage"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="form-group" data-bind="css: email.validationClass">
+					  <label class="control-label">Email (required)</label>
+					  <input type="text" class="form-control" data-bind="value: email, valueUpdate: 'afterkeyup'" />
+					  <span class="control-label" data-bind="text: email.validationMessage"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="form-group" data-bind="css: phone.validationClass">
+					  <label class="control-label">Phone</label>
+					  <input type="text" class="form-control" data-bind="value: phone, valueUpdate: 'afterkeyup'" />
+					  <span class="control-label" data-bind="text: phone.validationMessage"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="form-group" data-bind="css: zipcode.validationClass">
+					  <label class="control-label">Zip</label>
+					  <input type="text" class="form-control" data-bind="value: zipcode, valueUpdate: 'afterkeyup'" />
+					  <span class="control-label" data-bind="text: zipcode.validationMessage"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="form-group" data-bind="css: website.validationClass">
+					  <label class="control-label">Website</label>
+					  <input type="text" class="form-control" data-bind="value: website, valueUpdate: 'afterkeyup'" />
+					  <span class="control-label" data-bind="text: website.validationMessage"></span>
+					</div>
+				</div>
+
+				<div class="row">
+					<input type="submit" class="btn btn-primary col-xs-12" data-bind="enableIfValid: true" />
+				</div>
+				
+			</form>
+
+		</div>
+
+	</div>
+	<script src="js/regexlib.js"></script>
+	<script src="js/knockout-2.2.1.js"></script>
+	<script src="../src/ko.bootstrap-validation.js"></script>
+	<script>
+		function ViewModel() {
+			var self = this;
+
+			self.name = ko.observable().bootstrapValidation({ errorMessage: "Please enter your name" });
+
+			self.email = ko.observable().bootstrapValidation({
+				errorMessage: "Please enter a valid email",
+				regex: reg.email
+			});
+
+			self.phone = ko.observable().bootstrapValidation({
+				errorMessage: "Please enter a valid phone number",
+				regex: reg.phone,
+				required: false
+			});
+
+			self.zipcode = ko.observable().bootstrapValidation({
+				errorMessage: "Please enter a valid zipcode",
+				regex: reg.zipcode,
+				required: false
+			});
+
+			self.website = ko.observable().bootstrapValidation({
+				errorMessage: "Please enter a valid url",
+				regex: reg.url,
+				required: false
+			});
+
+		}
+		ko.applyBindings(new ViewModel());
+	</script>
+</body>
+</html>
