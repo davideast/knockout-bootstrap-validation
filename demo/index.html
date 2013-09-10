@@ -8,7 +8,6 @@
 		}
 		input[type=text]{
 			height: 40px;
-
 		}
 	</style>
 </head>
@@ -59,7 +58,7 @@
 					</div>
 				</div>
 
-				<input type="submit" class="btn btn-primary" data-bind="enable: isValid" />
+				<input type="submit" class="btn btn-primary" data-bind="enableIfValid: true" />
 			</form>
 
 		</div>
@@ -72,50 +71,33 @@
 		function ViewModel() {
 			var self = this;
 
-			self.name = ko.observable()
-				.extend({
-					boostrapValidation: {
-						errorMessage: "Please enter your name"
-					}
-				})
+			self.name = ko.observable().bootstrapValidation({ errorMessage: "Please enter your name" });
 
-			self.email = ko.observable()
-				.extend({
-					boostrapValidation: {
-						errorMessage: "Please enter a valid email",
-						regex: reg.email
-					}
-				})
+			self.email = ko.observable().bootstrapValidation({
+				errorMessage: "Please enter a valid email",
+				regex: reg.email
+			});
 
-			self.phone = ko.observable()
-				.extend({
-					boostrapValidation: {
-						errorMessage: "Please enter a valid phone number",
-						regex: reg.phone,
-						required: false
-					}
-				})			
+			self.phone = ko.observable().bootstrapValidation({
+				errorMessage: "Please enter a valid phone number",
+				regex: reg.phone,
+				required: false
+			});
 
-			self.zipcode = ko.observable()
-				.extend({
-					boostrapValidation: {
-						errorMessage: "Please enter a valid zipcode",
-						regex: reg.zipcode,
-						required: false
-					}
-				})		
+			self.zipcode = ko.observable().bootstrapValidation({
+				errorMessage: "Please enter a valid zipcode",
+				regex: reg.zipcode,
+				required: false
+			});
 
-			self.website = ko.observable()
-				.extend({
-					boostrapValidation: {
-						errorMessage: "Please enter a valid url",
-						regex: reg.url,
-						required: false
-					}
-				})	
+			self.website = ko.observable().bootstrapValidation({
+				errorMessage: "Please enter a valid url",
+				regex: reg.url,
+				required: false
+			});
 
 		}
-		ko.applyBindings(new ko.bootstrapValidatedViewModel(new ViewModel()));
+		ko.applyBindings(new ViewModel());
 	</script>
 </body>
 </html>

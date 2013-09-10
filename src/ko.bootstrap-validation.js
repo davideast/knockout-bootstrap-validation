@@ -1,6 +1,6 @@
 /*
  * ko.boostrap-validation.js
- * @version: 0.1
+ * @version: 0.9
  * @description: A simple knockout extender that will provide validation messages for user input.
  * 				 This extender is specifically tailored for Twitter Bootstrap validation states, but
  *				 it can be modified work with your own framework/implementation quite easily.
@@ -21,20 +21,20 @@
 // 						   of invalid input, but when no text is entered no success
 // 						   message will be displayed. This will not affect the isValid
 // 						   method on the ko.bootstrapValidatedViewModel.
-ko.extenders.boostrapValidation = function(target, options) {
-
-	// set the defaults
-	var defaults = {
-		successMessage: 'Good!',
-		errorMessage: 'Invalid!',
-		successClass: 'success',
-		errorClass: 'error',
-		regex: /^\s*\S.*$/,
-		required: true
-	}
-
-	// overwrite the defaults with the user defined settings
-	var settings = ko.utils.extend(defaults, options);
+ko.observable.fn.bootstrapValidation = function(options) {
+	// the observable we are extending
+	var target = this,
+		// set the defaults
+		defaults = {
+			successMessage: 'Good!',
+			errorMessage: 'Invalid!',
+			successClass: 'success',
+			errorClass: 'error',
+			regex: /^\s*\S.*$/,
+			required: true
+		},
+		// overwrite the defaults with the user defined settings
+		settings = ko.utils.extend(defaults, options);
 
 	// create the sub-observables that are responsible for the UI
 	target.validationMessage = ko.observable('');
@@ -104,4 +104,36 @@ ko.bootstrapValidatedViewModel = function(viewModel) {
 	}, viewModel);
 
 	return viewModel;
+};
+
+
+// @BindingHandler: enableIfValid
+// @description: This binding handler checks against the currenta context (the view model). It
+//				 checks to see if all of the observables that are being extended by bootstrapValidation
+//				 have any errors. If so, the element this binding is being applied to (usually a button) 
+//				 will be disabled. If not, the element will be enabled.
+ko.bindingHandlers.enableIfValid = {
+    init: function(element, valueAccessor, allBindings, data) {
+        var isValid = ko.computed({
+            read: function() {
+
+            	// Loop through the view model and find any properties that have the hasError
+				// sub-observable. 
+            	var errorCount = 0;
+
+				for (var key in data) {
+					// Incremement a counter if any hasError sub-observables return true. 
+				   if (data[key].hasOwnProperty('hasError')) {
+				   		errorCount = data[key].hasError() ? errorCount +=1 : errorCount;
+				   };
+				}
+
+				return errorCount === 0;
+            },
+            disposeWhenNodeIsRemoved: element  //clean up     
+        });
+        
+        //apply the actual enable binding against the element using this new computed
+        ko.applyBindingsToNode(element, { enable: isValid });
+    }
 };
