@@ -72,9 +72,6 @@ ko.observable.fn.bootstrapValidation = function(options) {
 
 		// the observable will not have an error if the required setting is false
 		target.hasError(settings.required ? hasError : false);
-
-		console.log(target(), target.hasError(), target.validationClass());
-		
 	});
 
 	return target;
