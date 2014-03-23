@@ -4,7 +4,7 @@
  * @description: A simple knockout extender that will provide validation messages for user input.
  * 				 This extender is specifically tailored for Twitter Bootstrap (v3) validation states, but
  *				 it can be modified work with your own framework/implementation quite easily.
- * @author: David East - http://www.davidea.st/
+ * @author: David East - http://davidea.st/
  * @license: MIT
  */
 
